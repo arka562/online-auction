@@ -1,0 +1,85 @@
+.view-products-container {
+  font-family: 'Poppins', sans-serif;
+  max-width: 90%;
+  margin: 2rem auto;
+}
+
+.header-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.products-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #4a4a4a;
+  margin: 0 auto;
+}
+
+.products-table th,
+.products-table td {
+  border: 1px solid #4a4a4a;
+  padding: 0.5rem 1rem;
+  text-align: left;
+  white-space: nowrap;
+}
+
+.products-table thead tr {
+  background-color: #e2e8f0; /* light gray */
+}
+
+.message-cell {
+  text-align: center;
+  padding: 1.5rem;
+  color: #555;
+  font-style: italic;
+}
+
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.page-btn {
+  background-color: #f3f4f6;
+  border: none;
+  padding: 0.5rem 0.75rem;
+  margin: 0 0.5rem;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+  transition: background-color 0.3s ease;
+}
+
+.page-btn:disabled {
+  cursor: not-allowed;
+  color: #aaa;
+  background-color: #e5e7eb;
+}
+
+.page-btn:not(:disabled):hover {
+  background-color: #d1d5db;
+}
+
+.current-page {
+  font-weight: 600;
+  padding: 0 1rem;
+  font-size: 1rem;
+}

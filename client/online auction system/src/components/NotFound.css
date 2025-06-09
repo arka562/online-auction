@@ -1,0 +1,26 @@
+.notfound-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	min-height: 100vh;
+	padding: 0 20px;
+	text-align: center;
+}
+
+.notfound-title {
+	font-weight: bold;
+	font-size: clamp(24px, 5vw, 36px);
+	margin-bottom: 1rem;
+}
+
+.notfound-subtext {
+	font-weight: normal;
+	font-size: clamp(16px, 4vw, 24px);
+	margin-bottom: 2rem;
+}
+
+.notfound-animation {
+	width: 100%;
+	max-width: 400px;
+}

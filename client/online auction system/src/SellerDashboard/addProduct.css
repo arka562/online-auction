@@ -1,0 +1,61 @@
+.addsellerprod-container {
+	width: 100%;
+	font-family: 'Poppins', sans-serif;
+}
+
+.addsellerprod-wrapper {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-top: 2rem;
+}
+
+.addsellerprod-heading {
+	margin-bottom: 2rem;
+	font-size: 1.5rem;
+}
+
+.addsellerprod-form {
+	width: 20rem;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.addsellerprod-label {
+	margin-bottom: 0.5rem;
+	align-self: flex-start;
+}
+
+.addsellerprod-input,
+.addsellerprod-textarea {
+	width: 100%;
+	padding: 0.5rem 1rem;
+	margin-bottom: 1rem;
+	border: 1px solid #d1d5db; /* gray-300 */
+	border-radius: 0.375rem;
+	outline: none;
+	font-size: 1rem;
+	box-sizing: border-box;
+}
+
+.addsellerprod-textarea {
+	min-height: 4rem;
+	resize: vertical;
+}
+
+.addsellerprod-submit-button {
+	width: 10rem;
+	padding: 0.5rem 1rem;
+	background-color: #22c55e; /* green-500 */
+	color: white;
+	border: none;
+	border-radius: 0.375rem;
+	font-size: 1.125rem;
+	cursor: pointer;
+	transition: background-color 0.3s ease;
+}
+
+.addsellerprod-submit-button:hover {
+	background-color: #16a34a; /* green-600 */
+}

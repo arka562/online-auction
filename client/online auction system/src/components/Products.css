@@ -1,0 +1,85 @@
+.products-container {
+	font-family: 'Poppins', sans-serif;
+	min-height: 100vh;
+	background-color: #f3f4f6;
+	padding: 20px;
+}
+
+.products-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 20px;
+}
+
+.products-header h2 {
+	font-size: 24px;
+	font-weight: 600;
+	color: #1f2937;
+}
+
+.products-table-wrapper {
+	overflow-x: auto;
+	background: white;
+	border-radius: 8px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.products-table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.products-table thead {
+	background-color: #e5e7eb;
+	color: #4b5563;
+	text-transform: uppercase;
+	font-size: 14px;
+}
+
+.products-table th,
+.products-table td {
+	padding: 12px 16px;
+	text-align: left;
+	border-bottom: 1px solid #e5e7eb;
+}
+
+.products-table .even {
+	background-color: white;
+}
+
+.products-table .odd {
+	background-color: #f9fafb;
+}
+
+.countdown-warning {
+	color: red;
+	font-weight: 500;
+}
+
+.pagination {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 20px;
+}
+
+.pagination button {
+	background-color: #e5e7eb;
+	color: #4b5563;
+	border: none;
+	padding: 6px 12px;
+	border-radius: 4px;
+	margin: 0 5px;
+	cursor: pointer;
+}
+
+.pagination button:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
+.pagination span {
+	margin: 0 5px;
+	font-weight: 500;
+}

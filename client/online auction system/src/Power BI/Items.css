@@ -1,0 +1,7 @@
+.Embed-container {
+  width: 100%;
+  height: 80vh; /* Adjust height as needed */
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
