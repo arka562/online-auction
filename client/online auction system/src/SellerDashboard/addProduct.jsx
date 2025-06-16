@@ -15,7 +15,8 @@ const AddsellerProd = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const sellerID = localStorage.getItem("seller_id");
+      const token = localStorage.getItem("token");
+
       const response = await axios.post(
         "http://localhost:4000/api/addProduct",
         {
@@ -25,10 +26,15 @@ const AddsellerProd = () => {
           auctionStartTime: auctionStartTime,
           auctionEndTime: endTime,
           category: category,
-          sellerID: sellerID,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
-      if (response.status === 200) {
+
+      if (response.status === 201 || response.status === 200) {
         navigate("/seller/products");
       } else {
         console.error("Failed to add product");

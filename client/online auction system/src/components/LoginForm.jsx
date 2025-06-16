@@ -4,72 +4,93 @@ import { useNavigate } from "react-router-dom";
 import "./LoginForm.css";
 
 const LoginForm = ({ setForceRefresh }) => {
+  const [mode, setMode] = useState("login"); // "login" or "register"
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [address, setAddress] = useState("");
+  const [accountBalance, setAccountBalance] = useState("");
   const [userType, setUserType] = useState("buyer");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const handleLogin = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      let loginSuccess = false;
-      let responseData;
+    setError("");
 
-      if (userType === "admin") {
-        if (username === "admin" && password === "vjti@123") {
-          loginSuccess = true;
-          responseData = { adminID: "admin" };
-        }
-      } else {
+    try {
+      if (mode === "login") {
         const response = await axios.post("http://localhost:4000/api/login", {
           username,
           password,
           userType,
         });
-        loginSuccess = response.data.auth;
-        responseData = response.data;
-      }
 
-      if (loginSuccess) {
-        localStorage.setItem("username", username);
-        localStorage.setItem("userType", userType);
-        if (userType === "buyer") {
-          localStorage.removeItem("seller_id");
-          localStorage.setItem("buyer_id", responseData.buyerID);
+        const { token, user } = response.data;
+
+        if (token && user) {
+          localStorage.setItem("token", token);
+          localStorage.setItem("username", user.username);
+          localStorage.setItem("userType", user.userType);
+
+          if (userType === "buyer") {
+            localStorage.setItem("buyer_id", user.id);
+            localStorage.removeItem("seller_id");
+            navigate("/products");
+          } else if (userType === "seller") {
+            localStorage.setItem("seller_id", user.id);
+            localStorage.removeItem("buyer_id");
+            navigate("/seller");
+          } else if (userType === "admin") {
+            localStorage.setItem("admin_id", user.id);
+            navigate("/admin");
+          }
+
           setForceRefresh((prev) => !prev);
-          navigate("/products");
-        } else if (userType === "seller") {
-          localStorage.removeItem("buyer_id");
-          localStorage.setItem("seller_id", responseData.sellerID);
-          setForceRefresh((prev) => !prev);
-          navigate("/seller");
-        } else if (userType === "admin") {
-          localStorage.setItem("admin_id", responseData.adminID);
-          setForceRefresh((prev) => !prev);
-          navigate("/admin");
+        } else {
+          setError("Invalid credentials");
         }
       } else {
-        setError("Invalid username or password.");
+        // Registration
+        const payload = {
+          username,
+          password,
+          userType,
+          ...(email && { email }),
+          ...(address && { address }),
+          ...(accountBalance && { accountBalance }),
+        };
+
+        const response = await axios.post(
+          "http://localhost:4000/api/register",
+          payload
+        );
+        if (response.status === 201) {
+          alert("Registration successful! Please log in.");
+          setMode("login");
+        }
       }
-    } catch (error) {
-      console.error("Error:", error);
-      setError("Failed to login. Please try again later.");
+    } catch (err) {
+      console.error(err);
+      setError(err.response?.data?.message || "An error occurred.");
     }
   };
 
   return (
     <div className="login-container">
       <div className="login-content">
-        <h2 className="login-title">Login</h2>
+        <h2 className="login-title">
+          {mode === "login" ? "Login" : "Register"}
+        </h2>
         {error && <p className="login-error">{error}</p>}
-        <form onSubmit={handleLogin}>
+        <form onSubmit={handleSubmit}>
           <input
             className="login-input"
             type="text"
             placeholder="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            required
           />
           <input
             className="login-input"
@@ -77,7 +98,33 @@ const LoginForm = ({ setForceRefresh }) => {
             placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
           />
+          {mode === "register" && (
+            <>
+              <input
+                className="login-input"
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <input
+                className="login-input"
+                type="text"
+                placeholder="Address"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+              />
+              <input
+                className="login-input"
+                type="number"
+                placeholder="Account Balance"
+                value={accountBalance}
+                onChange={(e) => setAccountBalance(e.target.value)}
+              />
+            </>
+          )}
           <select
             className="login-input"
             value={userType}
@@ -88,9 +135,26 @@ const LoginForm = ({ setForceRefresh }) => {
             <option value="admin">Admin</option>
           </select>
           <button className="login-button" type="submit">
-            Login
+            {mode === "login" ? "Login" : "Register"}
           </button>
         </form>
+        <p className="toggle-text">
+          {mode === "login" ? (
+            <>
+              Don't have an account?{" "}
+              <span className="toggle-link" onClick={() => setMode("register")}>
+                Register
+              </span>
+            </>
+          ) : (
+            <>
+              Already have an account?{" "}
+              <span className="toggle-link" onClick={() => setMode("login")}>
+                Login
+              </span>
+            </>
+          )}
+        </p>
       </div>
     </div>
   );
