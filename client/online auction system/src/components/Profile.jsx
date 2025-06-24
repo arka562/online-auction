@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import "./Profile.css";
 
 const Profile = () => {
@@ -12,10 +11,12 @@ const Profile = () => {
 
     const fetchProfile = async () => {
       try {
-        const response = await axios.get(
+        const response = await fetch(
           `http://localhost:4000/api/buyers/${userId}`
         );
-        setProfile(response.data);
+        if (!response.ok) throw new Error("Failed to fetch profile.");
+        const data = await response.json();
+        setProfile(data);
       } catch (error) {
         setError("Error fetching profile. Please try again later.");
       } finally {
@@ -40,7 +41,7 @@ const Profile = () => {
   }
 
   let formattedAccountBalance = "";
-  const accountBalance = Number(profile.account_balance);
+  const accountBalance = Number(profile.accountBalance);
   if (!isNaN(accountBalance)) {
     formattedAccountBalance = accountBalance
       .toFixed(2)

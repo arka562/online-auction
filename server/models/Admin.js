@@ -8,10 +8,13 @@ const adminSchema = new mongoose.Schema({
     unique: true,
     trim: true,
   },
+  email: String,
   password: {
     type: String,
     required: true,
   },
+  address: String,
+  accountBalance: Number,
 }, { timestamps: true });
 
 const Admin = mongoose.model("Admin", adminSchema);

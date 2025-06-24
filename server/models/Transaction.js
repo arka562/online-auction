@@ -4,17 +4,17 @@ import mongoose from "mongoose";
 const transactionSchema = new mongoose.Schema({
   buyerId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Buyer",
+    ref: "Buyer", // ✅ Must match your model declaration
     required: true
   },
   sellerId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Seller",
+    ref: "Seller", // ✅ Correct casing
     required: true
   },
   itemId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "Item",
+    ref: "Item", // ✅ Correct casing
     required: true
   },
   transactionAmount: {
@@ -23,7 +23,7 @@ const transactionSchema = new mongoose.Schema({
   },
   transactionTime: {
     type: Date,
-    default: Date.now
+    default: Date.now 
   },
   paymentMethod: {
     type: String,
@@ -32,11 +32,10 @@ const transactionSchema = new mongoose.Schema({
   },
   transactionStatus: {
     type: String,
-    enum: ["Completed","Incompleted"],
+    enum: ["Completed", "Incompleted"],
     required: true
   }
 });
 
 const Transaction = mongoose.model("Transaction", transactionSchema);
-
 export default Transaction;

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import "./addProduct.css";
 
 const AddsellerProd = () => {
@@ -17,24 +16,23 @@ const AddsellerProd = () => {
     try {
       const token = localStorage.getItem("token");
 
-      const response = await axios.post(
-        "http://localhost:4000/api/addProduct",
-        {
+      const response = await fetch("http://localhost:4000/api/addProduct", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
           itemName: name,
           description: description,
           startingPrice: price,
           auctionStartTime: auctionStartTime,
           auctionEndTime: endTime,
           category: category,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+        }),
+      });
 
-      if (response.status === 201 || response.status === 200) {
+      if (response.ok) {
         navigate("/seller/products");
       } else {
         console.error("Failed to add product");

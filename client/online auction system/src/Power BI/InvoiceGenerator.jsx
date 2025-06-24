@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import {
   PDFViewer,
   Document,
@@ -18,16 +17,23 @@ function InvoiceGenerator() {
   useEffect(() => {
     const fetchBuyerAndTransactions = async () => {
       try {
-        const buyerResponse = await axios.get("http://localhost:3000/buyers/1");
-        const transactionsResponse = await axios.get(
+        const buyerRes = await fetch("http://localhost:3000/buyers/1");
+        const transactionsRes = await fetch(
           "http://localhost:3000/transactions?buyer_id=1"
         );
 
-        setBuyer(buyerResponse.data);
-        setTransactions(transactionsResponse.data);
-        setLoading(false);
+        if (!buyerRes.ok || !transactionsRes.ok) {
+          throw new Error("Failed to fetch data");
+        }
+
+        const buyerData = await buyerRes.json();
+        const transactionData = await transactionsRes.json();
+
+        setBuyer(buyerData);
+        setTransactions(transactionData);
       } catch (error) {
         console.error("Error fetching data:", error);
+      } finally {
         setLoading(false);
       }
     };
@@ -44,7 +50,6 @@ function InvoiceGenerator() {
     0
   );
 
-  // PDF styles cannot be moved to CSS, keep here
   const pdfStyles = StyleSheet.create({
     page: {
       padding: 20,
@@ -126,14 +131,12 @@ function InvoiceGenerator() {
           <View style={pdfStyles.section}>
             <Text style={pdfStyles.header}>Transaction Details</Text>
 
-            {/* Table Header */}
             <View style={pdfStyles.tableHeader}>
               <Text style={pdfStyles.tableColItem}>Item Name</Text>
               <Text style={pdfStyles.tableColAmount}>Amount</Text>
               <Text style={pdfStyles.tableColTime}>Transaction Time</Text>
             </View>
 
-            {/* Table Rows */}
             {transactions.map((transaction) => (
               <View key={transaction.Transaction_ID} style={pdfStyles.tableRow}>
                 <Text style={pdfStyles.tableColItem}>

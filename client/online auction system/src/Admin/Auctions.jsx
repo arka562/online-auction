@@ -77,16 +77,16 @@ const Auctions = () => {
               ) : (
                 currentAuctions.map((auction, index) => (
                   <tr
-                    key={auction.Auction_ID}
+                    key={auction._id}
                     className={index % 2 === 0 ? "row-even" : "row-odd"}
                   >
-                    <td>{auction.Auction_ID}</td>
-                    <td>{auction.Item_Name}</td>
-                    <td>{auction.Description}</td>
-                    <td>{auction.Auction_Start_Time}</td>
-                    <td>{auction.Auction_End_Time}</td>
-                    <td>{auction.Auction_Status}</td>
-                    <td>{auction.Reserve_Price}</td>
+                    <td>{auction._id}</td>
+                    <td>{auction.Item_Name || "N/A"}</td>
+                    <td>{auction.Description || "N/A"}</td>
+                    <td>{new Date(auction.createdAt).toLocaleString()}</td>
+                    <td>{new Date(auction.auctionEndTime).toLocaleString()}</td>
+                    <td>{auction.lastBidder ? "Closed" : "Ongoing"}</td>
+                    <td>{auction.startingPrice}</td>
                   </tr>
                 ))
               )}

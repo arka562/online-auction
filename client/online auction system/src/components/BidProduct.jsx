@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
 import "./BidProduct.css";
 
 const BidProduct = () => {
@@ -20,18 +19,34 @@ const BidProduct = () => {
         return;
       }
 
-      const response = await axios.post("http://localhost:4000/api/bid", {
-        itemName: name,
-        amount: parsedAmount,
-        last_bidder: localStorage.getItem("username"),
+      const response = await fetch("http://localhost:4000/api/bid", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          itemName: name,
+          amount: parsedAmount,
+          last_bidder: localStorage.getItem("username"),
+        }),
       });
+      console.log("Username from storage:", body.last_bidder);
 
-      if (response.data.message === "Bid placed successfully") {
+      let data;
+      try {
+        data = await response.json();
+      } catch (err) {
+        data = null;
+      }
+
+      if (response.ok && data?.message === "Bid placed successfully") {
         setError(false);
         navigate("/products");
       } else {
         setError(true);
-        setErrorMessage("Failed to place bid. Please try again.");
+        setErrorMessage(
+          data?.message || "Failed to place bid. Please try again."
+        );
       }
     } catch (error) {
       console.error("Error placing bid:", error);
@@ -55,7 +70,7 @@ const BidProduct = () => {
             name="amount"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
-            min={parseFloat(price) + 0.01}
+            min={price ? parseFloat(price) + 0.01 : 0}
             step="0.01"
             required
             className="bid-input"

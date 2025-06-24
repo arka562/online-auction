@@ -13,14 +13,13 @@ const Products = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch("http://localhost:4000/api");
+        const response = await fetch(
+          "http://localhost:4000/api/buyer/products"
+        );
         if (!response.ok) throw new Error("Failed to fetch products");
 
         const data = await response.json();
-        const activeProducts = data.items.filter(
-          (product) => product.auction_status === "Active"
-        );
-        setProducts(activeProducts);
+        setProducts(data.items);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -102,12 +101,13 @@ const Products = () => {
             ) : (
               currentProducts.map((product, index) => (
                 <tr key={index} className={index % 2 === 0 ? "even" : "odd"}>
-                  <td>{product.item_name}</td>
-                  <td>{product.starting_price}</td>
-                  <td>{product.last_bidder || "None"}</td>
-                  <td>{product.seller_username}</td>
-                  <td>{product.last_bid || product.starting_price}</td>
-                  <td>{displayCountdown(product.auction_end_time)}</td>
+                  <td>{product.itemName}</td>
+                  <td>{product.startingPrice}</td>
+                  <td>{product.lastBidder || "None"}</td>
+                  <td>{product.sellerUsername}</td>
+                  <td>{product.lastBid || product.startingPrice}</td>
+                  <td>{displayCountdown(product.auctionEndTime)}</td>
+
                   <td>
                     <EditButton product={product} />
                   </td>

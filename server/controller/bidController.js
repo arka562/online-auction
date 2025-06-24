@@ -8,19 +8,35 @@ const bidItem = async (req, res) => {
   try {
     const bidAmount = parseFloat(amount);
     if (isNaN(bidAmount)) {
-      throw new Error("Invalid bid amount");
+      return res.status(400).json({
+        error: "Bad Request",
+        message: "Invalid bid amount provided",
+      });
     }
 
     // Find the buyer by username
     const buyer = await Buyer.findOne({ username: last_bidder });
     if (!buyer) {
-      throw new Error("Buyer not found");
+      return res.status(404).json({
+        error: "Not Found",
+        message: "Buyer not found",
+      });
     }
 
     // Find the item by name
     const item = await Item.findOne({ itemName });
     if (!item) {
-      throw new Error("Item not found");
+      return res.status(404).json({
+        error: "Not Found",
+        message: "Item not found",
+      });
+    }
+
+    if (bidAmount <= item.lastBid) {
+      return res.status(400).json({
+        error: "Bad Request",
+        message: `Bid must be higher than current bid of ₹${item.lastBid}`,
+      });
     }
 
     // Update the item with new bid
@@ -31,28 +47,12 @@ const bidItem = async (req, res) => {
     res.status(200).json({ message: "Bid placed successfully" });
   } catch (error) {
     console.error("Error placing bid:", error.message);
-
-    if (error.message === "Invalid bid amount") {
-      res.status(400).json({
-        error: "Bad Request",
-        message: "Invalid bid amount provided",
-      });
-    } else if (error.message === "Buyer not found") {
-      res.status(404).json({
-        error: "Not Found",
-        message: "Buyer not found",
-      });
-    } else if (error.message === "Item not found") {
-      res.status(404).json({
-        error: "Not Found",
-        message: "Item not found",
-      });
-    } else {
-      res.status(500).json({
-        error: "Internal Server Error",
-        debug: error.message,
-      });
-    }
+    res.status(500).json({
+      error: "Internal Server Error",
+      message: "An unexpected error occurred",
+      debug: error.message,
+    });
   }
 };
-export {bidItem};
+
+export { bidItem };

@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./LoginForm.css";
 
 const LoginForm = ({ setForceRefresh }) => {
-  const [mode, setMode] = useState("login"); // "login" or "register"
+  const [mode, setMode] = useState("login");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -18,16 +17,37 @@ const LoginForm = ({ setForceRefresh }) => {
     e.preventDefault();
     setError("");
 
+    const payload = {
+      username,
+      password,
+      userType,
+      ...(email && { email }),
+      ...(address && { address }),
+      ...(accountBalance && { accountBalance }),
+    };
+
+    const url =
+      mode === "login"
+        ? "http://localhost:4000/api/login"
+        : "http://localhost:4000/api/register";
+
     try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Something went wrong");
+      }
+
       if (mode === "login") {
-        const response = await axios.post("http://localhost:4000/api/login", {
-          username,
-          password,
-          userType,
-        });
-
-        const { token, user } = response.data;
-
+        const { token, user } = data;
         if (token && user) {
           localStorage.setItem("token", token);
           localStorage.setItem("username", user.username);
@@ -51,28 +71,12 @@ const LoginForm = ({ setForceRefresh }) => {
           setError("Invalid credentials");
         }
       } else {
-        // Registration
-        const payload = {
-          username,
-          password,
-          userType,
-          ...(email && { email }),
-          ...(address && { address }),
-          ...(accountBalance && { accountBalance }),
-        };
-
-        const response = await axios.post(
-          "http://localhost:4000/api/register",
-          payload
-        );
-        if (response.status === 201) {
-          alert("Registration successful! Please log in.");
-          setMode("login");
-        }
+        alert("Registration successful! Please log in.");
+        setMode("login");
       }
     } catch (err) {
       console.error(err);
-      setError(err.response?.data?.message || "An error occurred.");
+      setError(err.message || "An error occurred.");
     }
   };
 

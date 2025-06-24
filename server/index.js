@@ -23,16 +23,17 @@ import transactionsRoute from "./routes/transactions.js";
 import bidsRoute from "./routes/bids.js";
 import buyerProfileRoute from "./routes/buyerProfile.js";
 import buyersRoute from "./routes/buyers.js";
+import buyerRoute from "./routes/buyer.js"
 
 // Middleware
 app.use(cors());
-app.use(bodyParser.json()); // Or replace with app.use(express.json());
+app.use(bodyParser.json()); 
 
 // Routes
 app.use("/api", apiRoutes);
 app.use("/api/seller", sellerRoutes);
 app.use("/api", authRoutes);
-app.use("/api/bid", bidRoute);
+app.use("/api", bidRoute);
 app.use("/api/addProduct", addProdRoute);
 app.use("/api/seller/products", getProductsBySeller);
 app.use("/api/auctions", auctionsRoute);
@@ -40,6 +41,7 @@ app.use("/api/transactions", transactionsRoute);
 app.use("/api/placedbids", bidsRoute);
 app.use("/api", buyerProfileRoute);
 app.use("/api/buyers", buyersRoute);
+app.use("/api/buyer/products", buyerRoute);
 
 // Start server
 server.listen(PORT, () => {

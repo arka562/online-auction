@@ -20,86 +20,87 @@ const Nav = ({ header }) => {
   return (
     <nav className="nav-bar">
       <div className="nav-container">
-        <div className="nav-main">
-          <div className="nav-header">
-            <h2 className="nav-title">{header}</h2>
-          </div>
-          <div className="nav-right">
-            <p className="nav-notification">{notification}</p>
-            {isLoggedIn && (
-              <button className="btn btn-logout" onClick={handleLogout}>
-                Logout
+        <div className="nav-header">
+          <h2 className="nav-title">{header}</h2>
+
+          {/* Logout button on the right */}
+          {isLoggedIn && (
+            <button className="btn btn-logout" onClick={handleLogout}>
+              Logout
+            </button>
+          )}
+        </div>
+
+        {/* Centered role-based options */}
+        <div className="nav-options-center">
+          {userType === "seller" && (
+            <div className="btn-group">
+              <button
+                className="btn btn-blue"
+                onClick={() => navigate("/seller")}
+              >
+                Seller Dashboard
               </button>
-            )}
-          </div>
-          <div>
-            {userType === "seller" && (
-              <div className="btn-group">
-                <button
-                  className="btn btn-blue"
-                  onClick={() => navigate("/seller")}
-                >
-                  Seller Dashboard
-                </button>
-                <button
-                  className="btn btn-blue"
-                  onClick={() => navigate("/seller/add-product")}
-                >
-                  Add Product
-                </button>
-                <button
-                  className="btn btn-blue"
-                  onClick={() => navigate("/seller/products")}
-                >
-                  View Products
-                </button>
-              </div>
-            )}
-            {userType === "buyer" && (
-              <div className="btn-group">
-                <button
-                  className="btn btn-blue"
-                  onClick={() => navigate("/products")}
-                >
-                  View Products
-                </button>
-                <button
-                  className="btn btn-blue"
-                  onClick={() => navigate("/userprofile")}
-                >
-                  UserProfile
-                </button>
-              </div>
-            )}
-            {userType === "admin" && (
-              <div className="btn-group">
-                <button
-                  className="btn btn-blue"
-                  onClick={() => navigate("/admin")}
-                >
-                  Admin Dashboard
-                </button>
-                <button
-                  className="btn btn-blue"
-                  onClick={() => navigate("/admin/auctions")}
-                >
-                  Auctions History
-                </button>
-                <button
-                  className="btn btn-blue"
-                  onClick={() => navigate("/admin/transactions")}
-                >
-                  Transaction History
-                </button>
-                <button
-                  className="btn btn-blue"
-                  onClick={() => navigate("/admin/bids")}
-                >
-                  Bids Placed
-                </button>
-              </div>
-            )}
-          </div>
+              <button
+                className="btn btn-blue"
+                onClick={() => navigate("/seller/add-product")}
+              >
+                Add Product
+              </button>
+              <button
+                className="btn btn-blue"
+                onClick={() => navigate("/seller/products")}
+              >
+                View Products
+              </button>
+            </div>
+          )}
+
+          {userType === "buyer" && (
+            <div className="btn-group">
+              <button
+                className="btn btn-blue"
+                onClick={() => navigate("/products")}
+              >
+                View Products
+              </button>
+              <button
+                className="btn btn-blue"
+                onClick={() => navigate("/userprofile")}
+              >
+                User Profile
+              </button>
+            </div>
+          )}
+
+          {userType === "admin" && (
+            <div className="btn-group">
+              <button
+                className="btn btn-blue"
+                onClick={() => navigate("/admin")}
+              >
+                Admin Dashboard
+              </button>
+              <button
+                className="btn btn-blue"
+                onClick={() => navigate("/admin/auctions")}
+              >
+                Auctions History
+              </button>
+              <button
+                className="btn btn-blue"
+                onClick={() => navigate("/admin/transactions")}
+              >
+                Transaction History
+              </button>
+              <button
+                className="btn btn-blue"
+                onClick={() => navigate("/admin/bids")}
+              >
+                Bids Placed
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </nav>

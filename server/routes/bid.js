@@ -5,6 +5,6 @@ const router = express.Router();
 
 router.use(express.json());
 
-router.post("/", bidItem);
+router.post("/bid", bidItem);
 
 export default router;
